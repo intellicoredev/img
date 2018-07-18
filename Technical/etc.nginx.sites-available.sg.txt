@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    server_name 206.189.208.16;
+
+     location = /favicon.ico { access_log off; log_not_found off; }
+     location /static/ {
+        root /home/sgiotuser/django_apps/sg;
+     }
+
+	location / {
+		include proxy_params;
+		proxy_pass http://unix:/home/sgiotuser/django_apps/sg/sg.sock;
+	}
+
+}

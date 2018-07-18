@@ -1,0 +1,13 @@
+#/etc/systemd/system/gunicorn.service
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=sgiotuser
+Group=sgiotuser
+WorkingDirectory=/home/sgiotuser/django_apps/sg
+ExecStart=/home/sgiotuser/django_apps/envs/sgiotprod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/sgiotuser/django_apps/sg/sg.sock sg.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

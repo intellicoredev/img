@@ -1,0 +1,34 @@
+0. El archivo gunicorn esta en este directorio se llama gunicorn.service
+1. sudo nano /etc/systemd/system/gunicorn.service   # Primero configurar gunicorn
+
+# Despues levantar gunicorn
+
+2. sudo systemctl start gunicorn
+sudo systemctl enable gunicorn
+
+3. Check the status of the process to find out whether it was able to start:
+
+sudo systemctl status gunicorn
+
+4. Configure Nginx to Proxy Pass to Gunicorn
+Now that Gunicorn is set up, we need to configure Nginx to pass traffic to the process.
+
+Start by creating and opening a new server block in Nginx's sites-available directory:
+
+sudo nano /etc/nginx/sites-available/sg
+
+5. Save and close the file when you are finished. Now, we can enable the file by linking it to the sites-enabled directory:
+
+sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
+Test your Nginx configuration for syntax errors by typing:
+
+sudo nginx -t
+If no errors are reported, go ahead and restart Nginx by typing:
+
+sudo systemctl restart nginx
+Finally, we need to open up our firewall to normal traffic on port 80. Since we no longer need access to the development server, we can remove the rule to open port 8000 as well:
+
+sudo ufw delete allow 8000
+sudo ufw allow 'Nginx Full'
+You should now be able to go to your server's domain or IP address to view your application.
+
